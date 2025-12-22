@@ -9,9 +9,19 @@ END_PAGE = 69
 
 OUTPUT_FILE = "germany_installers.csv"
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-}
+session = requests.Session()
+
+session.headers.update({
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "Referer": "https://www.enfsolar.com/",
+    "Upgrade-Insecure-Requests": "1"
+})
 
 results = []
 seen = set()
@@ -24,8 +34,11 @@ for page in range(START_PAGE, END_PAGE + 1):
 
     print(f"Fetching page {page}: {url}")
 
-    response = requests.get(url, headers=headers, timeout=15)
-    response.raise_for_status()
+    response = session.get(url, timeout=20)
+
+    if response.status_code != 200:
+        print(f"Skipped page {page} (status {response.status_code})")
+        continue
 
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -35,10 +48,9 @@ for page in range(START_PAGE, END_PAGE + 1):
         continue
 
     for a in tbody.find_all("a", class_="mkjs-a", href=True):
-        name = a.text.strip()
+        name = a.get_text(strip=True)
         link = a["href"].strip()
 
-        # Ensure full URL
         if link.startswith("/"):
             link = BASE_URL + link
 
@@ -47,7 +59,7 @@ for page in range(START_PAGE, END_PAGE + 1):
             seen.add(key)
             results.append([name, link])
 
-    time.sleep(1)  # polite delay
+    time.sleep(1.2)  # important: avoid triggering protection
 
 print(f"Total installers collected: {len(results)}")
 
