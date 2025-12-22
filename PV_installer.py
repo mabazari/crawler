@@ -13,6 +13,8 @@ END_PAGE = 69
 
 OUTPUT_FILE = "germany_installers.csv"
 
+
+
 # 🔴 CHANGE THESE TO YOUR SYSTEM
 CHROME_USER_DATA_DIR = r"C:\Users\MS\AppData\Local\Google\Chrome\User Data"
 CHROME_PROFILE_DIR = "Default"
@@ -20,6 +22,7 @@ CHROME_PROFILE_DIR = "Default"
 # ==========================================
 
 chrome_options = Options()
+chrome_options.add_argument("--remote-debugging-port=9222")
 chrome_options.add_argument(f"--user-data-dir={CHROME_USER_DATA_DIR}")
 chrome_options.add_argument(f"--profile-directory={CHROME_PROFILE_DIR}")
 
