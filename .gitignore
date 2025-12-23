@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+.Venv_Sel/
+
+# Local tooling/artifacts
+chrome_profile/
+drivers/chromedriver.exe
+*.csv
+*.log
+
+# Local secrets/cookies
+www.enfsolar.com_cookies.txt
