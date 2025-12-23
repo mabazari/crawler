@@ -1,2 +1,3 @@
-2025/12/23-19:45:51.363 d50 Creating DB F:\AirSun\URL_Finder\crawler\chrome_profile\Default\Local Storage\leveldb since it was missing.
-2025/12/23-19:45:52.537 d50 Reusing MANIFEST F:\AirSun\URL_Finder\crawler\chrome_profile\Default\Local Storage\leveldb/MANIFEST-000001
+2025/12/23-22:44:53.037 930 Reusing MANIFEST F:\AirSun\URL_Finder\crawler\chrome_profile\Default\Local Storage\leveldb/MANIFEST-000001
+2025/12/23-22:44:53.047 930 Recovering log #4
+2025/12/23-22:44:53.050 930 Reusing old log F:\AirSun\URL_Finder\crawler\chrome_profile\Default\Local Storage\leveldb/000004.log 
