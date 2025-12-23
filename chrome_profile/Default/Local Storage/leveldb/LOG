@@ -1,6 +1,2 @@
-2025/12/23-15:42:09.027 3618 Reusing MANIFEST E:\ENF_Solar\crawler\chrome_profile\Default\Local Storage\leveldb/MANIFEST-000001
-2025/12/23-15:42:09.036 3618 Recovering log #4
-2025/12/23-15:42:09.040 3618 Reusing old log E:\ENF_Solar\crawler\chrome_profile\Default\Local Storage\leveldb/000004.log 
-2025/12/23-15:43:09.052 fbc Level-0 table #8: started
-2025/12/23-15:43:09.060 fbc Level-0 table #8: 74833 bytes OK
-2025/12/23-15:43:09.063 fbc Delete type=0 #4
+2025/12/23-19:45:51.363 d50 Creating DB F:\AirSun\URL_Finder\crawler\chrome_profile\Default\Local Storage\leveldb since it was missing.
+2025/12/23-19:45:52.537 d50 Reusing MANIFEST F:\AirSun\URL_Finder\crawler\chrome_profile\Default\Local Storage\leveldb/MANIFEST-000001
