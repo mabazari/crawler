@@ -15,8 +15,8 @@ BASE_URL = "https://www.enfsolar.com"
 START_PAGE = 1
 END_PAGE = 69  # test first few pages
 OUTPUT_FILE = "germany_installers.csv"
-PAGE_DELAY_MIN = 5
-PAGE_DELAY_MAX = 8
+PAGE_DELAY_BASE = 0.8
+PAGE_DELAY_JITTER = 0.7
 CHROMEDRIVER_PATH = Path("drivers/chromedriver.exe")
 DEBUGGER_ADDRESS = "127.0.0.1:9222"
 SCROLL_STEPS_MIN = 4
@@ -26,11 +26,34 @@ SCROLL_PAUSE_MAX = 0.9
 
 # ================= HUMAN-LIKE SCROLL =================
 def human_scroll(driver):
-    steps = random.randint(SCROLL_STEPS_MIN, SCROLL_STEPS_MAX)
-    for _ in range(steps):
-        scroll_by = random.randint(250, 700)
-        driver.execute_script("window.scrollBy(0, arguments[0]);", scroll_by)
+    try:
+        height = driver.execute_script("return document.body.scrollHeight || 0")
+    except Exception:
+        return
+
+    if not height:
+        return
+
+    steps = random.randint(2, max(2, SCROLL_STEPS_MAX))
+    for step in range(1, steps + 1):
+        y = int(height * step / steps)
+        try:
+            driver.execute_script("window.scrollTo(0, arguments[0]);", y)
+        except Exception:
+            break
         time.sleep(random.uniform(SCROLL_PAUSE_MIN, SCROLL_PAUSE_MAX))
+
+    try:
+        driver.execute_script("window.scrollTo(0, 0);")
+    except Exception:
+        pass
+
+def sleep_with_jitter(base_delay, jitter):
+    base = max(0.0, base_delay)
+    extra = max(0.0, jitter)
+    delay = base + random.uniform(0.0, extra)
+    if delay:
+        time.sleep(delay)
 
 # ================= CHROME SETUP =================
 chrome_options = Options()
@@ -54,7 +77,7 @@ try:
 
         print(f"Fetching page {page}: {url}")
         driver.get(url)
-        time.sleep(random.uniform(PAGE_DELAY_MIN, PAGE_DELAY_MAX))
+        sleep_with_jitter(PAGE_DELAY_BASE, PAGE_DELAY_JITTER)
         WebDriverWait(driver, 15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "tbody"))
         )

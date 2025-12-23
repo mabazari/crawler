@@ -1,2 +1,3 @@
-2025/12/23-11:28:57.005 4338 Creating DB E:\ENF_Solar\crawler\chrome_profile\Default\Sync Data\LevelDB since it was missing.
-2025/12/23-11:28:57.140 4338 Reusing MANIFEST E:\ENF_Solar\crawler\chrome_profile\Default\Sync Data\LevelDB/MANIFEST-000001
+2025/12/23-12:04:35.290 3d54 Reusing MANIFEST E:\ENF_Solar\crawler\chrome_profile\Default\Sync Data\LevelDB/MANIFEST-000001
+2025/12/23-12:04:35.301 3d54 Recovering log #3
+2025/12/23-12:04:35.302 3d54 Reusing old log E:\ENF_Solar\crawler\chrome_profile\Default\Sync Data\LevelDB/000003.log 

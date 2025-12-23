@@ -1,2 +1,3 @@
-2025/12/23-11:28:57.266 d74 Creating DB E:\ENF_Solar\crawler\chrome_profile\Default\Local Storage\leveldb since it was missing.
-2025/12/23-11:28:57.326 d74 Reusing MANIFEST E:\ENF_Solar\crawler\chrome_profile\Default\Local Storage\leveldb/MANIFEST-000001
+2025/12/23-12:04:35.439 3654 Reusing MANIFEST E:\ENF_Solar\crawler\chrome_profile\Default\Local Storage\leveldb/MANIFEST-000001
+2025/12/23-12:04:35.449 3654 Recovering log #3
+2025/12/23-12:04:35.453 3654 Reusing old log E:\ENF_Solar\crawler\chrome_profile\Default\Local Storage\leveldb/000003.log 
