@@ -13,7 +13,7 @@ import random
 # ================= CONFIG =================
 BASE_URL = "https://www.enfsolar.com"
 START_PAGE = 1
-END_PAGE = 3  # test first few pages
+END_PAGE = 69  # test first few pages
 OUTPUT_FILE = "germany_installers.csv"
 PAGE_DELAY_MIN = 5
 PAGE_DELAY_MAX = 8
