@@ -1,5 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from pathlib import Path
 from bs4 import BeautifulSoup
 import csv
 import time
@@ -10,57 +15,37 @@ BASE_URL = "https://www.enfsolar.com"
 START_PAGE = 1
 END_PAGE = 3  # test first few pages
 OUTPUT_FILE = "germany_installers.csv"
-COOKIE_FILE = "www.enfsolar.com_cookies.txt"  # Netscape format cookie file
 PAGE_DELAY_MIN = 5
 PAGE_DELAY_MAX = 8
+CHROMEDRIVER_PATH = Path("drivers/chromedriver.exe")
+DEBUGGER_ADDRESS = "127.0.0.1:9222"
+SCROLL_STEPS_MIN = 4
+SCROLL_STEPS_MAX = 8
+SCROLL_PAUSE_MIN = 0.3
+SCROLL_PAUSE_MAX = 0.9
 
-# ================= FUNCTION TO READ COOKIES =================
-def read_netscape_cookies(file_path):
-    cookies = []
-    with open(file_path, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if line.startswith("#") or not line:
-                continue
-            # Netscape cookie format:
-            # domain, flag, path, secure, expiration, name, value
-            parts = line.split("\t")
-            if len(parts) != 7:
-                continue
-            domain, flag, path, secure, expiry, name, value = parts
-            cookie = {
-                "name": name,
-                "value": value,
-                "domain": domain,
-                "path": path,
-            }
-            if secure.upper() == "TRUE":
-                cookie["secure"] = True
-            cookies.append(cookie)
-    return cookies
+# ================= HUMAN-LIKE SCROLL =================
+def human_scroll(driver):
+    steps = random.randint(SCROLL_STEPS_MIN, SCROLL_STEPS_MAX)
+    for _ in range(steps):
+        scroll_by = random.randint(250, 700)
+        driver.execute_script("window.scrollBy(0, arguments[0]);", scroll_by)
+        time.sleep(random.uniform(SCROLL_PAUSE_MIN, SCROLL_PAUSE_MAX))
 
 # ================= CHROME SETUP =================
 chrome_options = Options()
-chrome_options.add_argument("--start-maximized")
-chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-# chrome_options.add_argument("--headless=new")  # optional
+chrome_options.add_experimental_option("debuggerAddress", DEBUGGER_ADDRESS)
 
-driver = webdriver.Chrome(options=chrome_options)
+driver = webdriver.Chrome(
+    service=Service(str(CHROMEDRIVER_PATH)),
+    options=chrome_options
+)
 
 results = []
 seen = set()
 
 try:
-    # Step 1: Open the base URL to initialize session
-    driver.get(BASE_URL)
-    time.sleep(3)
-
-    # Step 2: Read cookies from file and add to Selenium
-    cookies = read_netscape_cookies(COOKIE_FILE)
-    for cookie in cookies:
-        driver.add_cookie(cookie)
-
-    # Step 3: Scrape pages
+    # Step 1: Scrape pages using the already-open browser session
     for page in range(START_PAGE, END_PAGE + 1):
         if page == 1:
             url = f"{BASE_URL}/directory/installer/Germany"
@@ -70,11 +55,15 @@ try:
         print(f"Fetching page {page}: {url}")
         driver.get(url)
         time.sleep(random.uniform(PAGE_DELAY_MIN, PAGE_DELAY_MAX))
+        WebDriverWait(driver, 15).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "tbody"))
+        )
+        human_scroll(driver)
 
         soup = BeautifulSoup(driver.page_source, "html.parser")
         tbody = soup.find("tbody")
         if not tbody:
-            print("❌ No tbody found — stopping")
+            print("No tbody found - stopping")
             break
 
         for a in tbody.find_all("a", class_="mkjs-a", href=True):
