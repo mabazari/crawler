@@ -19,6 +19,7 @@ PAGE_DELAY_BASE = 0.8
 PAGE_DELAY_JITTER = 0.7
 CHROMEDRIVER_PATH = Path("drivers/chromedriver.exe")
 DEBUGGER_ADDRESS = "127.0.0.1:9222"
+BLOCK_PHRASE = "Why have I been blocked?"
 SCROLL_STEPS_MIN = 4
 SCROLL_STEPS_MAX = 8
 SCROLL_PAUSE_MIN = 0.3
@@ -55,6 +56,9 @@ def sleep_with_jitter(base_delay, jitter):
     if delay:
         time.sleep(delay)
 
+def is_blocked(page_source):
+    return BLOCK_PHRASE in page_source
+
 # ================= CHROME SETUP =================
 chrome_options = Options()
 chrome_options.add_experimental_option("debuggerAddress", DEBUGGER_ADDRESS)
@@ -66,6 +70,7 @@ driver = webdriver.Chrome(
 
 results = []
 seen = set()
+blocked_page = None
 
 try:
     # Step 1: Scrape pages using the already-open browser session
@@ -84,6 +89,10 @@ try:
         human_scroll(driver)
 
         soup = BeautifulSoup(driver.page_source, "html.parser")
+        if is_blocked(driver.page_source):
+            blocked_page = page
+            print(f"Blocked on page {page}. Saving current results.")
+            break
         tbody = soup.find("tbody")
         if not tbody:
             print("No tbody found - stopping")
@@ -109,3 +118,6 @@ with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as f:
     writer.writerows(results)
 
 print(f"Saved to {OUTPUT_FILE}")
+if blocked_page is not None:
+    print(f"Stopped at page {blocked_page}. Resume from this page later.")
+
