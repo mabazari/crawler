@@ -1,3 +1,6 @@
-2025/12/25-13:24:24.414 37e0 Reusing MANIFEST E:\ENF_Solar\crawler\chrome_profile\Default\Local Storage\leveldb/MANIFEST-000001
-2025/12/25-13:24:24.429 37e0 Recovering log #3
-2025/12/25-13:24:24.433 37e0 Reusing old log E:\ENF_Solar\crawler\chrome_profile\Default\Local Storage\leveldb/000003.log 
+2025/12/27-12:25:09.511 33c Reusing MANIFEST E:\ENF_Solar\crawler\chrome_profile\Default\Local Storage\leveldb/MANIFEST-000001
+2025/12/27-12:25:09.523 33c Recovering log #7
+2025/12/27-12:25:09.526 33c Reusing old log E:\ENF_Solar\crawler\chrome_profile\Default\Local Storage\leveldb/000007.log 
+2025/12/27-12:26:09.535 44b8 Level-0 table #11: started
+2025/12/27-12:26:09.543 44b8 Level-0 table #11: 74256 bytes OK
+2025/12/27-12:26:09.547 44b8 Delete type=0 #7
